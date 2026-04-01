@@ -1,8 +1,3 @@
-# ==========================================
-# School-DOOMPY Engine - WAD Reader
-# Created by: garea
-# ==========================================
-
 import struct # Helpful python tool to read binary files
 from pygame.math import Vector2 as vec2
 from doom_types import * # Import all our DOOM specific structs

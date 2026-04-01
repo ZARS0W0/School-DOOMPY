@@ -1,8 +1,3 @@
-# ==========================================
-# School-DOOMPY Engine - 2D Map Renderer
-# Created by: garea
-# ==========================================
-
 import pygame as pg # Pygame for drawing shapes
 from config import * # Import our game settings
 import random # For random line colors

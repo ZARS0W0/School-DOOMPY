@@ -1,8 +1,3 @@
-# ==========================================
-# School-DOOMPY Engine - Asset Manager
-# Created by: garea
-# ==========================================
-
 from config import * # Standard game settings
 from doom_types import PatchHeader 
 import pygame as pg

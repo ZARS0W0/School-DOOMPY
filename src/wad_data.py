@@ -1,8 +1,3 @@
-# ==========================================
-# School-DOOMPY Engine - WAD Data Storage
-# Created by: garea
-# ==========================================
-
 from wad_reader import WADReader
 from asset_manager import AssetManager # Changed from asset_data
 

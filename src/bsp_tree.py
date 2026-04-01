@@ -1,8 +1,3 @@
-# ==========================================
-# School-DOOMPY Engine - BSP Tree
-# Created by: garea
-# ==========================================
-
 from config import * # Import our game settings and math tools
 
 class BSP:

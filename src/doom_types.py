@@ -1,8 +1,3 @@
-# ==========================================
-# School-DOOMPY Engine - Data Types
-# Created by: garea
-# ==========================================
-
 # A note on data sizes:
 # H = unsigned 16-bit integer
 # h = signed 16-bit integer
