@@ -1,4 +1,7 @@
 import math
+import sys
+import ctypes
+import pygame as pg
 
 # ─────────────────────────────────────────────────────────────────────────────
 # settings.py — All the global values used across the whole game.
@@ -59,3 +62,26 @@ SCALE = WIDTH // NUM_RAYS   # = 2 pixels wide per ray at 1600px width
 # ── Wall textures ─────────────────────────────────────────────────────────────
 TEXTURE_SIZE      = 256           # Wall textures are 256 x 256 pixels
 HALF_TEXTURE_SIZE = TEXTURE_SIZE // 2  # Used when slicing textures vertically
+
+# ── Movement key bindings (auto-detected from OS keyboard layout) ─────────────
+def _detect_movement_keys():
+    """Return (forward, back, left, right) pygame key constants for the active layout."""
+    layout = 'qwerty'
+    if sys.platform == 'win32':
+        try:
+            buf = ctypes.create_string_buffer(9)
+            ctypes.windll.user32.GetKeyboardLayoutNameA(buf)
+            klid = buf.value.decode().upper()
+            # French (0000040C) and Belgian French (0000080C) use AZERTY
+            if klid in {'0000040C', '0000080C'}:
+                layout = 'azerty'
+        except Exception:
+            pass
+
+    _layouts = {
+        'qwerty': (pg.K_w, pg.K_s, pg.K_a, pg.K_d),
+        'azerty': (pg.K_z, pg.K_s, pg.K_q, pg.K_d),
+    }
+    return _layouts.get(layout, _layouts['qwerty'])
+
+KEY_FORWARD, KEY_BACK, KEY_LEFT, KEY_RIGHT = _detect_movement_keys()

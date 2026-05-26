@@ -1,14 +1,6 @@
 # School-DOOMPY — Corrected & Complete UML Class Diagram
 
-> **Audit notes** (corrections from v1):
-> - Added missing `x`, `y` fields on `SpriteObject` and `Player`
-> - Added missing hidden fields on `SpriteObject`: `dx`, `dy`, `theta`, `screen_x`, `dist`, `norm_dist`
-> - Added `Game` instance fields for all subsystems (`map`, `player`, etc.) created in `new_game()`
-> - Marked `pos`, `map_pos` as `«property»` on `Player` and `NPC`
-> - `Weapon.update()` does NOT call `get_sprite()` — it only does `check_animation_time()` + `animate_shot()`
-> - Added missing cross-class dependency arrows: `RayCasting → ObjectRenderer`, `NPC → PathFinding`, `Player → ObjectRenderer`, `Player → Sound`, `Player → Weapon`
-> - `ObjectHandler.npc_positions` starts as `{}` dict, rewritten as set each `update()` tick
-> - `PathFinding.get_path()` is `@lru_cache` decorated
+
 
 ```mermaid
 classDiagram

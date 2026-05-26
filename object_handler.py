@@ -35,9 +35,9 @@ class ObjectHandler:
         self.npc_positions = {}
 
         # ── Enemy spawn setup ─────────────────────────────────────────────────
-        self.enemies   = 10                                                          # Total enemies on the map (fewer = more roaming time)
+        self.enemies   = 15                                                          # Total enemies on the map (fewer = more roaming time)
         self.npc_types = [SoldierNPC, CacoDemonNPC, CyberDemonNPC, AnimeGirlNPC]  # What types can spawn
-        self.weights   = [3, 3, 4, 90]  # TEST: 90% AnimeGirl spawn rate
+        self.weights   = [3, 3, 4, 90]  
 
         # The 10×10 area around the player's starting position is off-limits for spawning
         # so the player doesn't immediately spawn next to an enemy

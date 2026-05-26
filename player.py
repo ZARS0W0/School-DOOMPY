@@ -118,16 +118,16 @@ class Player:
         keys = pg.key.get_pressed()
         num_key_pressed = -1  # Counts extra keys pressed; used to detect diagonal movement
 
-        if keys[pg.K_w]:  # Move forward
+        if keys[KEY_FORWARD]:
             num_key_pressed += 1
             dx += speed_cos; dy += speed_sin
-        if keys[pg.K_s]:  # Move backward
+        if keys[KEY_BACK]:
             num_key_pressed += 1
             dx += -speed_cos; dy += -speed_sin
-        if keys[pg.K_a]:  # Strafe left
+        if keys[KEY_LEFT]:
             num_key_pressed += 1
             dx += speed_sin; dy += -speed_cos
-        if keys[pg.K_d]:  # Strafe right
+        if keys[KEY_RIGHT]:
             num_key_pressed += 1
             dx += -speed_sin; dy += speed_cos
 
