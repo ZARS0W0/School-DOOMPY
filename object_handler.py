@@ -37,7 +37,13 @@ class ObjectHandler:
         # ── Enemy spawn setup ─────────────────────────────────────────────────
         self.enemies   = 15                                                          # Total enemies on the map (fewer = more roaming time)
         self.npc_types = [SoldierNPC, CacoDemonNPC, CyberDemonNPC, AnimeGirlNPC]  # What types can spawn
-        self.weights   = [3, 3, 4, 90]  
+        self.weights   = [3, 3, 4, 90]
+
+        # The HUD reads this to display "killed / total" on the kill counter.
+        # It mirrors `self.enemies` but is named clearly so it's obvious it's
+        # the *initial* count — we don't change it as enemies die, only the
+        # `npc_positions` set shrinks. (killed = total_enemies - alive)
+        self.total_enemies = self.enemies
 
         # The 10×10 area around the player's starting position is off-limits for spawning
         # so the player doesn't immediately spawn next to an enemy

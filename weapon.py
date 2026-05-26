@@ -1,4 +1,5 @@
 from sprite_object import *
+from settings import HUD_TOP
 
 
 class Weapon(AnimatedSprite):
@@ -27,14 +28,22 @@ class Weapon(AnimatedSprite):
              for img in self.images]
         )
 
-        # Work out where to draw the weapon — horizontally centred, stuck to the bottom
+        # Work out where to draw the weapon — horizontally centred, with its
+        # bottom edge sitting on top of the HUD bar (HUD_TOP). Before the HUD
+        # existed this used HEIGHT instead, so the weapon was glued to the
+        # bottom of the screen; now we float it just above the status bar so
+        # the bar and weapon don't overlap.
         self.weapon_pos = (HALF_WIDTH - self.images[0].get_width() // 2,
-                           HEIGHT     - self.images[0].get_height())
+                           HUD_TOP    - self.images[0].get_height())
 
         self.reloading    = False              # True while the firing animation is playing
         self.num_images   = len(self.images)   # How many frames the firing animation has
         self.frame_counter = 0                 # Counts how many frames of the animation have played
         self.damage = 100                      # How much damage the shotgun deals per hit
+
+        # Used by the HUD to print the current weapon's name in its WEAPON
+        # section. Subclasses (when we add more guns) override this string.
+        self.display_name = 'SHOTGUN'
 
     def animate_shot(self):
         """

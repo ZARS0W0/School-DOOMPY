@@ -85,3 +85,36 @@ def _detect_movement_keys():
     return _layouts.get(layout, _layouts['qwerty'])
 
 KEY_FORWARD, KEY_BACK, KEY_LEFT, KEY_RIGHT = _detect_movement_keys()
+
+# ── HUD (heads-up display) ───────────────────────────────────────────────────
+# We use the actual DOOM status bar artwork (STBAR + STF* faces + STTNUM*
+# numerals) extracted from a WAD. Everything is drawn at integer scale so
+# the pixel art stays crisp instead of getting blurred by smooth scaling.
+#
+# Native STBAR is 320×32. Scaling by 5 fits our 1600-wide window exactly
+# and gives the bar a comfortable on-screen height of 160px.
+HUD_SCALE           = WIDTH // 320        # Integer scale factor (=5 at 1600 wide)
+HUD_BAR_NATIVE_H    = 32                  # STBAR height in WAD pixels
+HUD_HEIGHT          = HUD_BAR_NATIVE_H * HUD_SCALE     # On-screen bar height
+HUD_TOP             = HEIGHT - HUD_HEIGHT              # Y where the bar starts
+HUD_BG_FALLBACK     = (0, 0, 0)           # Painted under the bar if our window is wider than the scaled STBAR
+
+# Slot coordinates from the original DOOM source (st_stuff.c) — these are in
+# *native* 320×32 status-bar pixels. Multiply by HUD_SCALE to get screen px.
+# The number positions are right-justified — the x value is the RIGHT edge
+# of the number (so a longer number grows to the left).
+HUD_HEALTH_X        = 90                  # Health number's right edge
+HUD_NUMBER_Y        = 3                   # Top y of the big STTNUM numbers
+HUD_FRAGS_X         = 138                 # We repurpose the FRAG slot for KILLS
+# Face X/Y are the actual blit positions (DOOM authentic).
+# The original game stores patch leftoffset = -5, topoffset = -2 inside the
+# STF* lumps and computes draw_x = anchor_x - leftoffset (= 143 - (-5) = 148).
+# Our extractor doesn't carry the offsets through to the PNGs, so we just
+# bake the result into the coordinates here.
+HUD_FACE_X          = 148                 # Top-left of the face graphic on the bar
+HUD_FACE_Y          = 2                   # Small vertical inset from top of bar
+
+# Face animation timing. Real DOOM cycles the idle look (centre → L → R → C)
+# at a random interval; we use a fixed cadence to keep the code simple.
+HUD_FACE_TICK_MS    = 500                 # Time between idle face frames
+HUD_OUCH_DURATION_MS = 700                # How long the "ouch" face stays after a hit

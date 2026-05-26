@@ -10,6 +10,7 @@ from object_handler import *
 from weapon import *
 from sound import *
 from pathfinding import *
+from hud import HUD
 
 
 class Game:
@@ -56,6 +57,9 @@ class Game:
         self.weapon = Weapon(self)                  # The player's shotgun
         self.sound = Sound(self)                    # All sound effects and music
         self.pathfinding = PathFinding(self)        # Helps enemies navigate around walls
+        # HUD must be created after player, object_handler and weapon because
+        # it reads health, kill count and the weapon's display name from them.
+        self.hud = HUD(self)                        # DOOM-style bottom status bar
         pg.mixer.music.play(-1)                     # Start the background music, looping forever
 
     def update(self):
@@ -77,13 +81,16 @@ class Game:
     def draw(self):
         """
         Draws everything to the screen each frame.
-        ObjectRenderer handles walls, sky, floor, sprites, and the health HUD.
-        The weapon is drawn last so it always appears on top of everything.
+        Draw order matters — later draws cover earlier ones:
+          1. ObjectRenderer paints the 3D scene (sky, floor, walls, sprites).
+          2. HUD paints the bottom status bar over the lower part of the scene.
+          3. Weapon is drawn last so the gun sits on top of the HUD.
         The commented-out lines are debug views of the 2D map — useful for testing.
         """
         # self.screen.fill('black')  # Only needed if something doesn't cover the whole screen
-        self.object_renderer.draw()  # Draw the 3D scene and HUD
-        self.weapon.draw()           # Draw the shotgun on top
+        self.object_renderer.draw()  # Draw the 3D scene
+        self.hud.draw()              # Draw the bottom status bar over the scene
+        self.weapon.draw()           # Draw the shotgun on top of everything
         # self.map.draw()    # Debug: overhead map grid
         # self.player.draw() # Debug: player dot and look direction
 

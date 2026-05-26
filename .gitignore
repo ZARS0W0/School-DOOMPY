@@ -1,0 +1,14 @@
+# Python bytecode / cache
+__pycache__/
+*.pyc
+*.pyo
+
+# DOOM WAD files — extracted HUD assets are committed, but the WAD itself
+# (especially the retail one) is copyrighted and must not be redistributed.
+# Users run `python extract_wad.py <their.wad>` once to regenerate assets.
+*.wad
+*.WAD
+
+# Test screenshots produced by manual HUD smoke tests
+doom_hud_*.png
+hud_test_*.png

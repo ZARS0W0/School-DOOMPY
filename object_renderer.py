@@ -4,10 +4,12 @@ from settings import *
 
 class ObjectRenderer:
     """
-    This class is responsible for drawing everything you see on screen.
-    It draws the sky, the floor, the textured walls (using raycasting data),
-    all the sprites in the world, and the health HUD in the corner.
-    It also handles showing the game-over and win screens.
+    This class is responsible for drawing the 3D world: sky, floor, textured
+    walls (via raycasting data) and all the sprites. It also owns the
+    game-over and win full-screen images and the damage flash overlay.
+
+    The HUD (health number, face, kill counter) lives in its own class now —
+    this used to also draw the old top-left digit health, but that moved out.
     """
 
     def __init__(self, game):
@@ -27,13 +29,6 @@ class ObjectRenderer:
         # Red blood overlay — blit this over the screen when the player takes damage
         self.blood_screen = self.get_texture('resources/textures/blood_screen.png', RES)
 
-        # Digit images for the health display (0-9 plus a % symbol at index 10)
-        self.digit_size   = 90
-        self.digit_images = [self.get_texture(f'resources/textures/digits/{i}.png',
-                                              [self.digit_size] * 2) for i in range(11)]
-        # Map each character ('0' to '10') to its image for easy lookup
-        self.digits = dict(zip(map(str, range(11)), self.digit_images))
-
         # Full-screen images shown when the player dies or wins
         self.game_over_image = self.get_texture('resources/textures/game_over.png', RES)
         self.win_image       = self.get_texture('resources/textures/win.png',       RES)
@@ -41,11 +36,12 @@ class ObjectRenderer:
     def draw(self):
         """
         Main draw call — runs every frame.
-        Order matters: background first, then the scene, then the HUD on top.
+        Order matters: background first, then the scene on top of it.
+        The HUD (health, kills, weapon name, face) used to live here but moved
+        to the dedicated HUD class — Game now draws that as a separate pass.
         """
         self.draw_background()       # Draw sky and floor first (behind everything)
         self.render_game_objects()   # Draw walls and sprites sorted by depth
-        self.draw_player_health()    # Draw the health number over everything
 
     def win(self):
         """Show the win screen — called when all enemies are dead."""
@@ -54,17 +50,6 @@ class ObjectRenderer:
     def game_over(self):
         """Show the game over screen — called when the player dies."""
         self.screen.blit(self.game_over_image, (0, 0))
-
-    def draw_player_health(self):
-        """
-        Draws the player's health as digit images in the top-left corner.
-        We convert the health number to a string, then look up each digit's image.
-        A % symbol (stored at index '10') is added after the last digit.
-        """
-        health = str(self.game.player.health)
-        for i, char in enumerate(health):
-            self.screen.blit(self.digits[char], (i * self.digit_size, 0))
-        self.screen.blit(self.digits['10'], ((i + 1) * self.digit_size, 0))  # The % symbol
 
     def player_damage(self):
         """Flash the red blood overlay over the screen when the player is hit."""
